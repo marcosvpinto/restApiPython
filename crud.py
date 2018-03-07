@@ -9,6 +9,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(basedir, 'crud
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
@@ -18,15 +19,18 @@ class User(db.Model):
         self.username = username
         self.email = email 
 
+
 class UserSchema(ma.Schema):
     class Meta:
-        #Fields to expose
+        # Fields to expose
         fields = ('id', 'username', 'email')
+
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 
-#endpoint to create new user
+
+# endpoint to create new user
 @app.route("/user", methods=["POST"])
 def add_user():
     username = request.json['username']
@@ -38,6 +42,7 @@ def add_user():
     db.session.commit()
 
     return jsonify(new_user)
+
 
 # endpoint to show all users
 @app.route("/user", methods=["GET"])
